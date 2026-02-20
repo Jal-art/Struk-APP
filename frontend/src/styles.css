@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+  background-color: white;
+  color: rgb(15, 23, 42);
+}
+
+html:not(.dark) .text-slate-300,
+html:not(.dark) .text-slate-200 {
+  color: rgb(71, 85, 105);
+}
+
+html:not(.dark) .text-slate-400 {
+  color: rgb(71, 85, 105);
+}
+
+html:not(.dark) .bg-slate-950 {
+  background-color: rgb(241, 245, 249);
+}
+
+html:not(.dark) .bg-white\/10 {
+  background-color: rgb(226, 232, 240);
+}
+
+html:not(.dark) .ring-white\/15,
+html:not(.dark) .ring-white\/10 {
+  border-color: rgb(203, 213, 225);
+}
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
