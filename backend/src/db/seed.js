@@ -1,11 +1,29 @@
 require('dotenv').config()
+const bcrypt = require('bcryptjs')
 const { sequelize } = require('./index')
-const { Transaction, TransactionItem } = require('../models')
+const { Transaction, TransactionItem, User } = require('../models')
 const { makeCode, computeTotals } = require('../utils/receipt')
 
 async function main() {
   await sequelize.sync({ alter: true })
 
+  // Seed admin user
+  const hashedPassword = await bcrypt.hash('admin123', 10)
+  await User.findOrCreate({
+    where: { username: 'admin' },
+    defaults: {
+      username: 'admin',
+      email: 'admin@klinik.com',
+      password: hashedPassword,
+      fullName: 'Administrator',
+      role: 'admin',
+      isActive: true
+    }
+  })
+
+  console.log('Admin user created/verified')
+
+  // Seed sample transactions
   const items = [
     { name: 'Konsultasi', qty: 1, price: 100000 },
     { name: 'USG', qty: 1, price: 150000 }
@@ -23,7 +41,7 @@ async function main() {
 
   await TransactionItem.bulkCreate(items.map(it => ({ transactionId: trx.id, ...it })))
 
-  console.log('Seed inserted:', trx.id)
+  console.log('Sample transaction inserted:', trx.id)
   process.exit(0)
 }
 

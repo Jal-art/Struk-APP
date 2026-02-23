@@ -1,14 +1,15 @@
 const { Sequelize } = require('sequelize')
+require('dotenv').config()
 
 const sequelize = new Sequelize(
-  'struk_db',   // ganti sesuai db kamu
-  'root',
-  '',
+  process.env.DB_NAME || 'struk_db',
+  process.env.DB_USER || 'root',
+  process.env.DB_PASS || '',
   {
-    host: 'localhost',
+    host: process.env.DB_HOST || 'localhost',
     dialect: 'mysql',
     logging: false
   }
 )
 
-module.exports = { sequelize }   // 🔥 WAJIB OBJECT
+module.exports = { sequelize }

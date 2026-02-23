@@ -4,6 +4,7 @@ import api from '../lib/http'
 export const useReceiptsStore = defineStore('receipts', {
   state: () => ({
     items: [],
+    trashedItems: [],
     loading: false,
     error: null
   }),
@@ -20,6 +21,20 @@ export const useReceiptsStore = defineStore('receipts', {
         this.loading = false
       }
     },
+    async fetchTrashed(search = '') {
+      this.loading = true
+      this.error = null
+      try {
+        const { data } = await api.get('/transactions/trash/list', {
+          params: { search }
+        })
+        this.trashedItems = data.data
+      } catch (e) {
+        this.error = e.userMessage || 'Gagal memuat data trash'
+      } finally {
+        this.loading = false
+      }
+    },
     async create(payload) {
       const { data } = await api.post('/transactions', payload)
       return data.data
@@ -31,6 +46,16 @@ export const useReceiptsStore = defineStore('receipts', {
     async remove(id) {
       await api.delete(`/transactions/${id}`)
       this.items = this.items.filter(x => x.id !== Number(id))
+    },
+    async restore(id) {
+      const { data } = await api.patch(`/transactions/${id}/restore`)
+      this.trashedItems = this.trashedItems.filter(x => x.id !== Number(id))
+      return data
+    },
+    async permanentlyDelete(id) {
+      const { data } = await api.delete(`/transactions/${id}/permanent`)
+      this.trashedItems = this.trashedItems.filter(x => x.id !== Number(id))
+      return data
     }
   }
 })

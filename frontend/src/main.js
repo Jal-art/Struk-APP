@@ -14,4 +14,9 @@ const { useAppStore } = await import('./stores/app.js')
 const appStore = useAppStore()
 appStore.load()
 
+// Load auth from storage
+const { useAuthStore } = await import('./stores/auth.js')
+const authStore = useAuthStore()
+authStore.loadFromStorage()
+
 app.use(router).mount('#app')

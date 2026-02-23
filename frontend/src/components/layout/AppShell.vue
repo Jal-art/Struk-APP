@@ -18,17 +18,53 @@
         <nav class="flex items-center gap-2 text-sm">
           <RouterLink class="navlink" to="/">Dashboard</RouterLink>
           <RouterLink class="navlink" to="/new">Buat Struk</RouterLink>
+          <RouterLink class="navlink" to="/trash">Trash</RouterLink>
           <RouterLink class="navlink" to="/settings">Settings</RouterLink>
           <a class="navlink" href="https://github.com/" target="_blank" rel="noreferrer">Docs</a>
         </nav>
-        <button
-          @click="appStore.toggleDarkMode()"
-          class="ml-4 p-2 rounded-lg transition-colors duration-200"
-          :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-slate-200 hover:bg-slate-300'"
-          :title="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-        >
-          <span class="text-lg">{{ darkMode ? '🌙' : '☀️' }}</span>
-        </button>
+
+        <div class="flex items-center gap-3 ml-4">
+          <!-- User Profile Dropdown -->
+          <div class="relative" v-if="authStore.isAuthenticated">
+            <button
+              @click="showUserMenu = !showUserMenu"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200"
+              :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-slate-200 hover:bg-slate-300'"
+            >
+              <span class="text-lg">👤</span>
+              <span class="text-sm font-medium">{{ authStore.user?.fullName || authStore.user?.username }}</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              v-show="showUserMenu"
+              @click.outside="showUserMenu = false"
+              class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg z-50 transition-all"
+              :class="darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'"
+            >
+              <div class="p-3 border-b" :class="darkMode ? 'border-slate-700' : 'border-slate-200'">
+                <p class="text-sm font-medium">{{ authStore.user?.fullName || authStore.user?.username }}</p>
+                <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">{{ authStore.user?.email }}</p>
+              </div>
+              <button
+                @click="handleLogout"
+                class="w-full text-left px-4 py-2 text-sm hover:bg-red-500 hover:text-white transition-colors"
+                :class="darkMode ? 'text-slate-200' : 'text-slate-700'"
+              >
+                🚪 Logout
+              </button>
+            </div>
+          </div>
+
+          <button
+            @click="appStore.toggleDarkMode()"
+            class="p-2 rounded-lg transition-colors duration-200"
+            :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-slate-200 hover:bg-slate-300'"
+            :title="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+          >
+            <span class="text-lg">{{ darkMode ? '🌙' : '☀️' }}</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -50,12 +86,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
+import { useAuthStore } from '@/stores/auth'
 
+const router = useRouter()
 const appStore = useAppStore()
+const authStore = useAuthStore()
 const year = new Date().getFullYear()
 const darkMode = computed(() => appStore.darkMode)
+const showUserMenu = ref(false)
+
+const handleLogout = async () => {
+  await authStore.logout()
+  showUserMenu.value = false
+  router.push('/login')
+}
 </script>
 
 <style scoped>
