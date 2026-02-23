@@ -78,10 +78,6 @@ Frontend: `http://localhost:5173`
 - Settings identitas klinik tersimpan di localStorage.
 
 
-
-
-SEMANGATTTTTT GUYSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
                _____
             .-"     "-.
            /           \
@@ -95,6 +91,6 @@ SEMANGATTTTTT GUYSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
                |    /         \   |
                |   /           \  |
                '---'             '---'
-
-
+  
+TUGAS PKL PPLG  TA 2026 by Solumedis
 
