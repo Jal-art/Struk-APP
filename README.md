@@ -37,7 +37,7 @@
 ## 1) Setup Database
 Buat database:
 ```sql
-CREATE DATABASE struk_db;
+CREATE DATABASE db_struk;
 ```
 
 ---
