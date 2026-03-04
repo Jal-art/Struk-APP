@@ -74,7 +74,7 @@ Frontend: `http://localhost:5173`
 ---
 
 ## Notes UI/UX
-- Preview struk realtime, ada mode print thermal (`@media print`).
+- Preview struk realtime, ada mode print thermall (`@media print`).
 - Settings identitas klinik tersimpan di localStorage.
 
 
